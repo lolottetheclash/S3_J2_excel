@@ -48,8 +48,4 @@ def mairies
 	#on convertit les deux array en 1 hash contenant les noms des mairies et leur mail associé
 	return la_totale = nom_mairie.zip(array_mail).to_h
 end
-
-page_mairie = Scrapper.new("http://annuaire-des-mairies.com/val-d-oise.html")
-puts page_mairie.mairies
-
 end
