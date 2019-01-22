@@ -1,14 +1,19 @@
+class Scrapper
 
-#page de référence 
-$page = Nokogiri::HTML(open("http://annuaire-des-mairies.com/val-d-oise.html"))  
+#initialise  le rdv avec les infos passées en paramètre
+def initialize(page)
+	@@page = (Nokogiri::HTML(open(page)))
+end	
+
+
 
 def nom_mairie
 # stocke les noms de mairie dans l'array array_mairie
 	array_mairie = []
 	# va chercher tous les liens qui ont la classe lientxt
-	$page.css('a.lientxt').each do |nom|
+	@@page.css('a.lientxt').each do |nom|
 	#prend le nom de chaque lien et le stocke dans l'array array_mairie
-	puts nom = nom.text
+	nom = nom.text
 	array_mairie.push(nom)
 	end
 return array_mairie
@@ -21,7 +26,7 @@ def mairies
 # stocke les liens des mairies dans l'array array_final
 	array_final = []
 	array_mail = []
-	array_liens = $page.xpath('//a')
+	array_liens = @@page.xpath('//a')
 	#stocke chaque lien dans un array_liens
 	array_liens.each do |array_lien|
 		#stocke uniquement les liens qui nous intéressent( qui contiennent la classe lientxt, pas tous les liens de la page)
@@ -34,7 +39,7 @@ def mairies
 	   	 	page2 = Nokogiri::HTML(open("http://annuaire-des-mairies.com#{nom}"))
 			#on va sur chaque élément "mail" qu'on va stocker dans l'array_mail
 			page2.xpath('/html/body/div/main/section[2]/div/table/tbody/tr[4]/td[2]').each do |mail|
-				 puts mail = mail.text 
+				 mail = mail.text 
 				array_mail.push(mail)
 			end
 		
@@ -44,4 +49,7 @@ def mairies
 	return la_totale = nom_mairie.zip(array_mail).to_h
 end
 
-puts mairies
+page_mairie = Scrapper.new("http://annuaire-des-mairies.com/val-d-oise.html")
+puts page_mairie.mairies
+
+end
